@@ -19,15 +19,14 @@
 #' @export
 
 
-
 make_phrase <- function(num, num_word, item, verb, adjective, location){
   verb <- str_replace_na(verb, "")
   adjective <- str_replace_na(adjective, "")
   location <- str_replace_na(location, "")
 
-  englishNum <- if(num == 1) "a" else as.english(num)
+  englishNum <- if(num == 1) "a" else english::as.english(num)
 
-  phrase <- glue("{englishNum} {adjective} {item} {verb} {location}") %>%
+  phrase <- glue("{englishNum} {adjective} {if(..1 != 1) pluralize_gift(item) else item} {verb} {location}") %>%
     str_replace("  +", " ")
 
   return(phrase)
