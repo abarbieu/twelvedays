@@ -5,11 +5,10 @@
 #' @return A string or vector of strings with the pluralized words
 #'
 #' @import stringr
+#' @import english
 #' @import dplyr
 #' @import glue
 #' @import purrr
-#' @import english
-#' @import glue
 #'
 #' @export
 pluralize_gift <- function(gift){

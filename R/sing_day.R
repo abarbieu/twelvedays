@@ -8,11 +8,10 @@
 #' @return A string singing the line of the song with all gifts for the given day.
 #'
 #' @import stringr
+#' @import english
 #' @import dplyr
 #' @import glue
 #' @import purrr
-#' @import english
-#' @import glue
 #'
 #' @export
 sing_day <- function(dataset, line, phrase_col){

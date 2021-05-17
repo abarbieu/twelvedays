@@ -10,11 +10,10 @@
 #' @return A string containing the words in grammatical order.
 #'
 #' @import stringr
+#' @import english
 #' @import glue
 #' @import dplyr
 #' @import purrr
-#' @import english
-#' @import glue
 #'
 #' @export
 
@@ -24,12 +23,12 @@ make_phrase <- function(num, num_word, item, verb, adjective, location){
   adjective <- str_replace_na(adjective, "")
   location <- str_replace_na(location, "")
 
-  englishNum <- if(num == 1) "a" else english::as.english(num)
+  englishNum <- if(num == 1) "a" else as.english(num)
 
-  phrase <- glue("{englishNum} {adjective} {if(..1 != 1) pluralize_gift(item) else item} {verb} {location}") %>%
+  phrase <- glue("{englishNum} {adjective} {item} {verb} {location}") %>%
     str_replace("  +", " ")
-
+  phrase <- str_replace(phrase,"  +", " ") %>%
+    str_replace(" +$", "")
   return(phrase)
 
 }
-
