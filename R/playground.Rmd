@@ -1,0 +1,94 @@
+---
+title: "playground"
+author: "Aidan Barbieux"
+date: "5/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+library("glue")
+library("english")
+xmas <- read.csv("https://www.dropbox.com/s/e584pryn8evm1gz/xmas.csv?dl=1")
+```
+
+plurals
+```{r}
+my_names <- c("Kimberly", "Trini", "Jason", "Billy", "Zach", "Tommy")
+
+my_names %>% 
+  str_replace("y$", "ies")
+
+pluralize_gift <- function(gift){
+
+gift <- gift %>%
+  str_replace("$", "s") %>%
+  str_replace("ys$", "ies") %>%
+  str_replace("ooses$", "eese")
+
+return(gift)
+
+}
+
+pluralize_gift(xmas$Gift.Item)
+```
+
+sentences
+```{r}
+make_phrase <- function(num, num_word, item, verb, adjective, location){
+  verb <- str_replace_na(verb, "")
+  adjective <- str_replace_na(adjective, "")
+  location <- str_replace_na(location, "")
+  
+  englishNum <- if(num == 1) "a" else as.english(num)
+  
+  phrase <- glue("{englishNum} {adjective} {item} {verb} {location}") %>%
+    str_replace("  +", " ")
+  phrase <- str_replace(phrase,"  +", " ") %>%
+    str_replace(" +$", "")
+  return(phrase)
+  
+}
+
+make_phrase(num = 1, 
+            num_word = "ten", 
+            item = "partrige", 
+            verb = "", 
+            adjective = NA, 
+            location = "in a pear tree")
+
+xmas <- xmas %>% mutate(
+    Full.Phrase = unlist(pmap(xmas, ~make_phrase(..1,..2, if(..1 != 1) pluralize_gift(..3) else ..3,..4,..5,..6)))
+  )
+
+```
+
+
+iteration
+```{r}
+sing_day <- function(dataset, line, phrase_col){
+  
+  phrases <- dataset %>% pull({{phrase_col}})
+  phrases <- phrases[1:line]
+  
+  
+  intro <- glue("On the {dataset[line,]$Day.in.Words} of Christmas, my true love gave to me:")
+  
+  if(line==1)
+    return(glue("{intro}\n{phrases[1]}"))
+  
+  middle <- paste(phrases[line:2], collapse = ',\n')
+  
+  end <- glue("and {phrases[1]}")
+  
+  return(glue("{intro}\n{middle}\n{end}"))
+
+}
+
+sing_day(xmas, 5, Full.Phrase)
+```
+

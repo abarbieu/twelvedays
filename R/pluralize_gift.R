@@ -8,13 +8,17 @@
 #' @import dplyr
 #' @import glue
 #' @import purrr
+#' @import english
+#' @import glue
 #'
 #' @export
 pluralize_gift <- function(gift){
 
-gift <- gift %>%
-  str_replace()
+  gift <- gift %>%
+    str_replace("$", "s") %>%
+    str_replace("ys$", "ies") %>%
+    str_replace("ooses$", "eese")
 
-return(gift)
+  return(gift)
 
 }

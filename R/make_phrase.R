@@ -13,17 +13,24 @@
 #' @import glue
 #' @import dplyr
 #' @import purrr
+#' @import english
+#' @import glue
 #'
 #' @export
 
 
 
 make_phrase <- function(num, num_word, item, verb, adjective, location){
-
   verb <- str_replace_na(verb, "")
+  adjective <- str_replace_na(adjective, "")
+  location <- str_replace_na(location, "")
 
-  #????
+  englishNum <- if(num == 1) "a" else as.english(num)
 
+  phrase <- glue("{englishNum} {adjective} {item} {verb} {location}") %>%
+    str_replace("  +", " ")
+
+  return(phrase)
 
 }
 
