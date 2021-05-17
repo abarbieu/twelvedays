@@ -25,7 +25,7 @@ make_phrase <- function(num, num_word, item, verb, adjective, location){
 
   englishNum <- if(num == 1) "a" else as.english(num)
   pluralizedGift <- if(num == 1) item else pluralize_gift(item)
-  phrase <- glue("{englishNum} {adjective} {pluralized_gift} {verb} {location}") %>%
+  phrase <- glue("{englishNum} {adjective} {pluralizedGift} {verb} {location}") %>%
     str_replace("  +", " ")
   phrase <- str_replace(phrase,"  +", " ") %>%
     str_replace(" +$", "")
